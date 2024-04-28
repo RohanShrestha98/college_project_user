@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+.base_layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.base_padding {
+    min-width: 90%;
+    width: 90%;
+    max-width: 1500px;
+}
