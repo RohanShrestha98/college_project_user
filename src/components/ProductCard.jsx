@@ -10,11 +10,7 @@ export default function ProductCard({item}) {
                     key={item?.id}
                     className="border px-3 py-2 flex hover:shadow-lg cursor-pointer flex-col gap-2"
                   >
-                    <img
-                      src={product}
-                      className="w-[80%] ml-[10%] my-2"
-                      alt=""
-                    />
+                    <img src={item?.images?.[0]?.url??product} className=" h-[160px] object-cover  w-full" alt="" />
                     <div className="flex items-center gap-1">
                       <FaStar className="text-sm text-yellow-500" />
                       <FaStar className="text-sm text-yellow-500" />

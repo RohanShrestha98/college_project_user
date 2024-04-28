@@ -2,6 +2,7 @@ import CustomSlider from "../../components/CustomSlider";
 import discountBanner from "../../assets/banner.png";
 import { IoMdArrowForward } from "react-icons/io";
 import ProductCard from "../../components/ProductCard";
+import { useProductData } from "../../hooks/useQueryData";
 
 export default function ShopWithCategories() {
   const featureProduct = [
@@ -68,6 +69,9 @@ export default function ShopWithCategories() {
       price: "70",
     },
   ];
+  const {data,isLoading,isError} = useProductData()
+
+  console.log("data",data?.data)
 
   return (
     <div className="base_layout mb-10">
@@ -99,7 +103,7 @@ export default function ShopWithCategories() {
               </div>
             </div>
             <div className="grid grid-cols-4 gap-4">
-              {productList?.map((item) => {
+              {data?.data?.map((item) => {
                 return <ProductCard key={item?.id} item={item} />;
               })}
             </div>
