@@ -86,6 +86,8 @@ const Footer = () => {
                     </div>
                 </div>
             </div>
+            <hr className='py-3' />
+            <p className='text-[#77878F] text-sm font-normal text-center'>Copyright All right reserved</p>
         </div>
     )
 }
