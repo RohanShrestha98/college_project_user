@@ -1,21 +1,26 @@
 import { MdOutlineCancel } from "react-icons/md";
 import { IoReturnUpBackOutline } from "react-icons/io5";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function CartPage() {
-  const [cart, setCart] = useState([])
-  console.log(cart[0]?.price)
+  const [selectedCart,setSelectedCart] = useState()
 
-  useEffect(() => {
-    const existingArrayString = localStorage.getItem("myCart");
-    const existingArray = JSON.parse(existingArrayString) || [];
-    setCart(existingArray)
-  }, []);
+  const existingArrayString = localStorage.getItem("myCart");
+  const existingArray = JSON.parse(existingArrayString) || [];
 
-  const removeCart = (id) => {
-    let filtered = cart.filter(item => item._id !== id);
-    setCart(filtered)
+  const navigate = useNavigate()
+
+
+  const handleRemoveFromCart = ()=>{
+    const indexToRemove = existingArray.findIndex(obj => obj._id === existingArray?._id);
+    if (indexToRemove !== -1) {
+      existingArray.splice(indexToRemove, 1);
+      const updatedArrayString = JSON.stringify(existingArray);
+      localStorage.setItem('myCart', updatedArrayString);
+    }
   }
+
 
   return (
     <div className="m-20 flex justify-between">
@@ -32,27 +37,27 @@ export default function CartPage() {
               </tr>
             </thead>
             <tbody>
-              {cart?.map((item, index) => (
-                <tr className="grid grid-cols-4 gap-10 px-2 py-5 items-center">
+              {existingArray?.map((item, index) => (
+                <tr key={index} onClick={()=>setSelectedCart(item)} className="grid cursor-pointer grid-cols-4 gap-10 px-2 py-5 items-center">
                   <th className="flex items-center gap-2 text-base font-normal">
-                    <MdOutlineCancel
+                    {/* <MdOutlineCancel
                       fontSize={18}
                       cursor='pointer'
                       className="text-[#929FA5] hover:text-red-700"
-                    // onClick={removeCart(id)}
-                    />
-                    <img src={item.images[0].url} alt="product" className="w-10 h-10" />
-                    {item.name}
+                    onClick={()=>handleRemoveFromCart(item?._id)}
+                    /> */}
+                    <img src={item?.images[0]?.url} alt="product" className="w-10 h-10" />
+                    {item?.name}
                   </th>
-                  <th className="text-base font-normal">{item.price}</th>
-                  <th className="text-base font-normal">{item.count}</th>
-                  <th className="text-base font-normal">{item.price * item.count}</th>
+                  <th className="text-base font-normal">{item?.price}</th>
+                  <th className="text-base font-normal">{item?.count}</th>
+                  <th className="text-base font-normal">{item?.price * item?.count}</th>
                 </tr>
               ))}
             </tbody>
           </table>
           <div className="flex justify-between mt-5">
-            <button className="text-[#2DA5F3] border border-[#2DA5F3] text-sm px-6 py-2 flex gap-2">
+            <button onClick={()=>navigate("/")} className="text-[#2DA5F3] border border-[#2DA5F3] text-sm px-6 py-2 flex gap-2">
               <IoReturnUpBackOutline color="#2DA5F3" fontSize={18} />
               Return to Shop
             </button>
@@ -68,7 +73,7 @@ export default function CartPage() {
           <div className="pt-5 grid grid-cols-1 gap-3">
             <div className="flex justify-between items-center">
               <p className="text-[#5F6C72] text-sm">Sub Total</p>
-              <p className="text-[#191C1F] text-sm">{cart[0]?.price}</p>
+              <p className="text-[#191C1F] text-sm">{selectedCart?.price??existingArray?.[0]?.price}</p>
             </div>
             <div className="flex justify-between items-center">
               <p className="text-[#5F6C72] text-sm">Shipping</p>
@@ -76,7 +81,7 @@ export default function CartPage() {
             </div>
             <div className="flex justify-between items-center">
               <p className="text-[#5F6C72] text-sm">Discount</p>
-              <p className="text-[#191C1F] text-sm">{cart[0]?.discount}</p>
+              <p className="text-[#191C1F] text-sm">{selectedCart?.discount??existingArray?.[0]?.discount}</p>
             </div>
             <div className="flex justify-between items-center">
               <p className="text-[#5F6C72] text-sm">Tax</p>
@@ -85,7 +90,7 @@ export default function CartPage() {
             <hr />
             <div className="flex justify-between items-center">
               <p className="text-[#191C1F] text-sm">Total</p>
-              <p className="text-[#191C1F] text-sm">{cart[0]?.price - cart[0]?.discount}</p>
+              <p className="text-[#191C1F] text-sm">{selectedCart?.price??existingArray?.[0]?.price - existingArray?.[0]?.discount}</p>
             </div>
             <button className="bg-[#FA8232] text-white px-6 py-3 mt-5 text-sm">
               Proceed to Checkout
