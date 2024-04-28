@@ -4,8 +4,9 @@ import { useProductData } from "../../hooks/useQueryData";
 import { useNavigate } from "react-router-dom";
 
 export default function BestDeals() {
-  const {data,isLoading,isError} = useProductData()
-const navigate = useNavigate()
+  const { data, isLoading, isError } = useProductData()
+  const navigate = useNavigate()
+  const filterData = data?.data?.filter(item => item?.isRohan)
   return (
     <div className="base_layout my-10">
       <div className="flex items-center base_padding justify-between ">
@@ -18,10 +19,10 @@ const navigate = useNavigate()
         </h2>
       </div>
       <div className=" base_padding grid grid-cols-5 mt-4 ">
-        {data?.data?.map((item) => {
+        {filterData?.map((item) => {
           return (
-            <div onClick={()=>navigate("/product-details",{state:{item}})} key={item?.id} className="border border-gray-100 p-2 hover:bg-blue-50">
-              <img src={item?.images?.[0]?.url??product} className="w-[80%] h-[160px] object-contain p-4 ml-[10%]" alt="" />
+            <div onClick={() => navigate("/product-details", { state: { item } })} key={item?.id} className="border border-gray-100 p-2 hover:bg-blue-50">
+              <img src={item?.images?.[0]?.url ?? product} className="w-[80%] h-[160px] object-contain p-4 ml-[10%]" alt="" />
               <div className="flex flex-col gap-1">
                 <h1 className="text-gray-800 line-clamp-2 text-sm font-normal">
                   {item?.name}
