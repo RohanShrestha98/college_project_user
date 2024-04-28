@@ -4,9 +4,11 @@ import { CiSearch } from "react-icons/ci";
 import { FiShoppingCart } from "react-icons/fi";
 import { FaRegHeart } from "react-icons/fa6";
 import { PiUser } from "react-icons/pi";
+import { useAuthContext } from "../context/authContext";
 
 export default function MainHeader() {
   const navigate = useNavigate()
+  const { auth } = useAuthContext();
 
   return (
     <div className="bg-[#1B6392] base_layout py-2">

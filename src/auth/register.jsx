@@ -19,7 +19,7 @@ const Register = () => {
     try {
       const result = await authRegisterMutation.mutateAsync(["post", "", data]);
         reset();
-        navigate("/");
+        navigate("/login");
     } catch (error) {
       console.log("error", error);
     }
