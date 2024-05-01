@@ -71,7 +71,6 @@ export default function ShopWithCategories() {
   ];
   const {data,isLoading,isError} = useProductData()
 
-  console.log("data",data?.data)
 
   return (
     <div className="base_layout mb-10">

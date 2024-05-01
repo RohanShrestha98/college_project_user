@@ -22,7 +22,6 @@ export const AuthProvider = ({ children }) => {
     ? decryptedData(cookies?.get("userDetails"))
     : initialAuthState;
 
-    console.log("userDetails",userDetails)
 
   const [auth, setAuth] = useState(userDetails);
 

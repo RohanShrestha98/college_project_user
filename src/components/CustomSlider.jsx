@@ -9,8 +9,6 @@ export default function CustomSlider() {
   const arrowRef = useRef();
   const {data} = useCategoryData()
 
-  console.log("data",data?.data)
-
   const settings = {
     className: "activeSlider",
     infinite: true,

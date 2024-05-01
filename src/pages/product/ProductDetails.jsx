@@ -11,7 +11,6 @@ import { toast } from "react-toastify";
 export default function ProductDetails() {
   const location = useLocation();
   const productDetails = location?.state?.item;
-  console.log("productDetails", productDetails);
   const { data, isLoading, isError } = useProductData();
   const navigate = useNavigate();
 
@@ -51,10 +50,8 @@ export default function ProductDetails() {
   const existingArrayString = localStorage.getItem("myCart");
   const existingArray = JSON.parse(existingArrayString) || [];
 
-  console.log("existingArray",existingArray)
   useEffect(()=>{
     const hasAddToCart = existingArray.some(obj => obj._id === productDetails?._id);
-    console.log("hasAddToCart",hasAddToCart)
     setHasAddCart(hasAddToCart)
   },[cartToggle])
   
@@ -127,7 +124,6 @@ export default function ProductDetails() {
             </div>
             <div className="grid grid-cols-2 gap-2">
               {productDetails?.categoryField?.map((item) => {
-                console.log("item", item);
                 return (
                   <div key={item?.id} className="flex gap-2 text-sm">
                     <p className="text-[#5F6C72] ">{item?.name} :</p>
