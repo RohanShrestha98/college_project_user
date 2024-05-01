@@ -69,9 +69,11 @@ export default function ShopWithCategories() {
       price: "70",
     },
   ];
-  const {data,isLoading,isError} = useProductData()
+  const { data, isLoading, isError } = useProductData()
 
-  console.log("data",data?.data)
+  console.log("data", data?.data)
+  const filterData = data?.data?.filter(item => item?.isRohan)
+
 
   return (
     <div className="base_layout mb-10">
@@ -103,7 +105,7 @@ export default function ShopWithCategories() {
               </div>
             </div>
             <div className="grid grid-cols-4 gap-4">
-              {data?.data?.map((item) => {
+              {filterData?.map((item) => {
                 return <ProductCard key={item?.id} item={item} />;
               })}
             </div>
