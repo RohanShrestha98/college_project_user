@@ -35,11 +35,11 @@ export default function HomeSlider() {
     },
   ]
   return (
-    <div className="w-[90%] ml-[5%] my-6 slider-container relative">
+    <div className="w-full slider-container relative">
       <Slider  ref={arrowRef}  {...settings}>
         {bannerList?.map((item) => {
           return (
-            <div key={item?.id} className="px-3 outline-none">
+            <div key={item?.id} className=" outline-none">
               <div className=" h-96 ">
                 <img src={item?.img} className="h-full object-cover w-full" alt="" />
               </div>
@@ -50,13 +50,13 @@ export default function HomeSlider() {
 
       <button
         onClick={() => arrowRef.current.slickPrev()}
-        className=" w-8 h-8 absolute top-[48%]  -ml-2 bg-gray-300 hover:bg-blue-600 hover:text-white rounded-full text-blue-600 flex items-center justify-center focus:outline-none"
+        className=" w-8 h-8 absolute top-[48%] ml-2 bg-gray-300 hover:bg-blue-600 hover:text-white rounded-full text-blue-600 flex items-center justify-center focus:outline-none"
       >
         <IoIosArrowBack />
       </button>
       <button
         onClick={() => arrowRef.current.slickNext()}
-        className="absolute top-[48%]   right-0 w-8 h-8 bg-gray-300 hover:bg-blue-600 hover:text-white rounded-full text-blue-600 flex items-center justify-center focus:outline-none"
+        className="absolute top-[48%] mr-2  right-0 w-8 h-8 bg-gray-300 hover:bg-blue-600 hover:text-white rounded-full text-blue-600 flex items-center justify-center focus:outline-none"
       >
         <IoIosArrowForward />
       </button>

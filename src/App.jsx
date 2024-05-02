@@ -9,6 +9,8 @@ import AuthLayout from "./layouts/AuthLayout";
 import Login from "./auth/login";
 import Register from "./auth/register";
 import CartPage from "./pages/cart/CartPage";
+import Billing from "./pages/billing/Billing";
+import TrackOrder from "./pages/billing/TrackOrder";
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/product-details" element={<ProductDetails />} />
           <Route path="/cart" element={<CartPage />} />
+          <Route path="/billing" element={<Billing />} />
+          <Route path="/track-order" element={<TrackOrder />} />
           </Route>
           <Route element={<AuthLayout/>}>
           <Route path="/login" element={<Login />} />

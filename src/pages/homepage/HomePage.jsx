@@ -5,7 +5,7 @@ import ShopWithCategories from "./ShopWithCategories";
 
 export default function HomePage() {
   return (
-    <div>
+    <div className="w-[100%] overflow-hidden">
       {/* <div className="base_layout"> */}
         <HomeSlider/>
       {/* </div> */}
