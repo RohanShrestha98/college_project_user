@@ -11,6 +11,8 @@ import Register from "./auth/register";
 import CartPage from "./pages/cart/CartPage";
 import Billing from "./pages/billing/Billing";
 import TrackOrder from "./pages/billing/TrackOrder";
+import Category from "./pages/category/Category";
+import Product from "./pages/product/Product";
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
           <Route path="/cart" element={<CartPage />} />
           <Route path="/billing" element={<Billing />} />
           <Route path="/track-order" element={<TrackOrder />} />
+          <Route path="/products" element={<Product />} />
+          <Route path="/category/:id" element={<Category />} />
           </Route>
           <Route element={<AuthLayout/>}>
           <Route path="/login" element={<Login />} />

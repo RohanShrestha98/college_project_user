@@ -7,6 +7,7 @@ import product from "../../assets/products/product1.png";
 import { useBuyProductMutation } from "../../hooks/useMutateData";
 import BuyNowModal from "./BuyNowModal";
 import { toast } from "react-toastify";
+import { useAuthContext } from "../../context/authContext";
 
 export default function ProductDetails() {
   const location = useLocation();
@@ -23,6 +24,7 @@ export default function ProductDetails() {
   const [cartToggle, setCartToggle] = useState(false);
   const [hasAddCart, setHasAddCart] = useState(false);
   const [buyNowModal, setBuyNowModal] = useState(false);
+  const {auth} = useAuthContext()
 
   const color = [
     {
@@ -47,6 +49,11 @@ export default function ProductDetails() {
     },
   ];
 
+  const handleLogin=()=>{
+    toast.error("Please login first to buy product")
+    navigate("/login")
+  }
+
   const existingArrayString = localStorage.getItem("myCart");
   const existingArray = JSON.parse(existingArrayString) || [];
 
@@ -60,6 +67,7 @@ export default function ProductDetails() {
     existingArray.push(newObject);
     const updatedArrayString = JSON.stringify(existingArray);
     localStorage.setItem("myCart", updatedArrayString);
+    toast.success("Product added to cart")
     setCartToggle(!cartToggle)
   };
 
@@ -69,6 +77,7 @@ export default function ProductDetails() {
       existingArray.splice(indexToRemove, 1);
       const updatedArrayString = JSON.stringify(existingArray);
       localStorage.setItem('myCart', updatedArrayString);
+    toast.success("Product remove to cart")
       setCartToggle(!cartToggle)
     }
   }
@@ -78,7 +87,7 @@ export default function ProductDetails() {
     const onSubmitHandler = async () => {
       const postData = {...productDetails,color:selectedColor,count:count,status:"pending"}
       try {
-        const result = await buyProdcutMutation.mutateAsync(["post", "create/", postData]);
+        const result = await buyProdcutMutation.mutateAsync(["post", "create", postData]);
         setBuyNowModal(false)
         toast.success("Product order successfully")
       } catch (error) {
@@ -90,7 +99,7 @@ export default function ProductDetails() {
   return (
     <div className="base_layout ">
       <div className="base_padding flex flex-col gap-10">
-        <div className="flex  justify-between gap-10 my-6 h-[400px]">
+        <div className="flex  justify-between gap-10 my-6 min-h-[400px] h-full">
           <div className="flex w-2/5 flex-col gap-2 h-full">
             <div className="border p-6 h-full flex justify-center">
               <img
@@ -201,7 +210,7 @@ export default function ProductDetails() {
                 <p className="uppercase">{hasAddCart ? "Remove from":"Add to"} card</p>
                 <LuShoppingCart />
               </div>
-              <div onClick={()=>setBuyNowModal(true)} className="h-full px-5 border-[3px] cursor-pointer hover:bg-[#FA8232] hover:text-white flex items-center border-[#FA8232] text-[#FA8232]">
+              <div onClick={()=>{auth?.accessToken ? navigate("/billing", { state: {...productDetails,color:selectedColor,count:count,status:"pending"} }):handleLogin()}} className="h-full px-5 border-[3px] cursor-pointer hover:bg-[#FA8232] hover:text-white flex items-center border-[#FA8232] text-[#FA8232]">
                 Buy Now
               </div>
             </div>
@@ -212,7 +221,7 @@ export default function ProductDetails() {
             <h1 className="text-gray-900 font-semibold text-xl">
               Recommended Products
             </h1>
-            <h2 className="text-blue-600 flex items-center gap-1 cursor-pointer text-sm font-semibold">
+            <h2 onClick={()=>navigate("/products")} className="text-blue-600 flex items-center gap-1 cursor-pointer text-sm font-semibold">
               Browse All Product <IoMdArrowForward />
             </h2>
           </div>

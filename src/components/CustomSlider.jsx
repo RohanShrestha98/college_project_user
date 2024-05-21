@@ -3,11 +3,13 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import Slider from "react-slick";
 import product from "../assets/products/product2.png";
 import { useCategoryData } from "../hooks/useQueryData";
+import { useNavigate } from "react-router-dom";
 
 
 export default function CustomSlider() {
   const arrowRef = useRef();
   const {data} = useCategoryData()
+  const navigate = useNavigate()
 
   const settings = {
     className: "activeSlider",
@@ -43,6 +45,7 @@ export default function CustomSlider() {
       img: product,
     });
   }
+  
 
   return (
     <div className="slider-container relative">
@@ -50,8 +53,9 @@ export default function CustomSlider() {
         {data?.data?.map((item) => {
           return (
             <div
+              onClick={()=>navigate(`/category/${item?._id}`)}
               key={item?.value}
-              className="flex justify-center  px-2 outline-none  "
+              className="flex justify-center cursor-pointer  px-2 outline-none  "
             >
               <div className=" overflow-hidden  min-w-[142px] border py-3 px-4">
                 <img

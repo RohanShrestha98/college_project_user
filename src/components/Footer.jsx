@@ -3,6 +3,7 @@ import logoDark from '../assets/logoDark.svg'
 import { FaArrowRight } from "react-icons/fa6";
 import googlePlay from '../assets/google-play.png'
 import appStore from '../assets/app-store.png'
+import { useNavigate } from 'react-router-dom';
 
 const footerLinks1 = [
     { name: 'Computer & Laptop' },
@@ -25,6 +26,7 @@ const footerLinks2 = [
 const tags = [{ name: "game" }, { name: "iPhone" }, { name: "Tv" }, { name: "Laptops" }, { name: "Speaker" }];
 
 const Footer = () => {
+    const navigate = useNavigate()
     return (
         <div className='bg-[#191C1F] text-white px-24 py-10'>
             <div className='grid grid-cols-5 gap-20'>
@@ -48,6 +50,7 @@ const Footer = () => {
                             </p>
                         ))}
                         <p
+                        onClick={()=>navigate("/products")}
                             className='text-[#EBC80C] text-base font-medium py-2 flex gap-1 items-center cursor-pointer'
                         >
                             Browse All Product

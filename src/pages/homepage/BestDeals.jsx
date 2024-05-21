@@ -8,13 +8,13 @@ export default function BestDeals() {
   const navigate = useNavigate()
   const filterData = data?.data?.filter(item => item?.isRohan)
   return (
-    <div className="base_layout my-10">
+    <div className="base_layout my-10 w-screen">
       <div className="flex items-center base_padding justify-between ">
         <div className="flex items-center gap-3">
           <h1 className="text-gray-900 font-semibold text-xl">Best Deals</h1>
           <p className="text-gray-400 text-sm">Deals ends in</p>
         </div>
-        <h2 className="text-blue-600 flex items-center gap-1 cursor-pointer text-sm font-semibold">
+        <h2 onClick={()=>navigate("/products")} className="text-blue-600 flex items-center gap-1 cursor-pointer text-sm font-semibold">
           Browse All Product <IoMdArrowForward />
         </h2>
       </div>

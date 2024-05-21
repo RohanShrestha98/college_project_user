@@ -22,4 +22,5 @@ export const useAdminFilesData = () =>
   useQueryData(["admin-documemt"], "api/admins/all-files");
 export const useShopData = () => useQueryData(["shop-approve"], "api/shop");
 export const useCategoryData = () => useQueryData(["category"], "api/category/list");
-export const useProductData = () => useQueryData(["product"], "api/product/list");
+export const useProductData = (id="",search="") => useQueryData(["product",id,search], `api/product/list/${id}?search=${search}`);
+export const useTrackOrderData = () => useQueryData(["track-order"], "api/buy-product/track-order");

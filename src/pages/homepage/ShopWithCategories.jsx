@@ -2,7 +2,9 @@ import CustomSlider from "../../components/CustomSlider";
 import discountBanner from "../../assets/banner.png";
 import { IoMdArrowForward } from "react-icons/io";
 import ProductCard from "../../components/ProductCard";
-import { useProductData } from "../../hooks/useQueryData";
+import { useCategoryData, useProductData } from "../../hooks/useQueryData";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function ShopWithCategories() {
   const featureProduct = [
@@ -27,52 +29,13 @@ export default function ShopWithCategories() {
       name: "TV",
     },
   ];
-  const productList = [
-    {
-      id: 1,
-      name: "TOZO T6 True Wireless Earbuds Bluetooth Headphon...",
-      price: "70",
-    },
-    {
-      id: 1,
-      name: "TOZO T6 True Wireless Earbuds Bluetooth Headphon...",
-      price: "70",
-    },
-    {
-      id: 1,
-      name: "TOZO T6 True Wireless Earbuds Bluetooth Headphon...",
-      price: "70",
-    },
-    {
-      id: 1,
-      name: "TOZO T6 True Wireless Earbuds Bluetooth Headphon...",
-      price: "70",
-    },
-    {
-      id: 1,
-      name: "TOZO T6 True Wireless Earbuds Bluetooth Headphon...",
-      price: "70",
-    },
-    {
-      id: 1,
-      name: "TOZO T6 True Wireless Earbuds Bluetooth Headphon...",
-      price: "70",
-    },
-    {
-      id: 1,
-      name: "TOZO T6 True Wireless Earbuds Bluetooth Headphon...",
-      price: "70",
-    },
-    {
-      id: 1,
-      name: "TOZO T6 True Wireless Earbuds Bluetooth Headphon...",
-      price: "70",
-    },
-  ];
-  const { data, isLoading, isError } = useProductData()
+  const {data:categoryData} = useCategoryData()
+  const [selectedCategory,setSelectedCategory] = useState("")
+  const { data, loading, error } = useProductData(selectedCategory)
+  const navigate = useNavigate()
 
-  console.log("data", data?.data)
   const filterData = data?.data?.filter(item => item?.isRohan)
+
 
 
   return (
@@ -92,23 +55,34 @@ export default function ShopWithCategories() {
                 Featured Products
               </h1>
               <div className="flex items-center gap-2">
-                {featureProduct?.map((item) => {
+              <div>
+                      <p className={`text-sm cursor-pointer hover:text-[#FA8232] ${selectedCategory === "" ?"text-[#FA8232]":"" }`} onClick={()=>setSelectedCategory("")}>All Products</p>
+                    </div>
+                {categoryData?.data?.slice(0,4)?.map((item) => {
                   return (
-                    <div key={item?.id}>
-                      <p className="text-sm cursor-pointer">{item?.name}</p>
+                    <div key={item?._id} onClick={()=>setSelectedCategory(item?._id)}>
+                      <p className={`text-sm cursor-pointer hover:text-[#FA8232]  ${selectedCategory === item?._id ?"text-[#FA8232]":"" }`}>{item?.title}</p>
                     </div>
                   );
                 })}
-                <p className="text-[#FA8232] text-sm cursor-pointer ml-1 flex items-center gap-1">
+                <p onClick={()=>navigate("/products")} className="text-[#FA8232] text-sm cursor-pointer ml-1 flex items-center gap-1">
                   Browse All Product <IoMdArrowForward />
                 </p>
               </div>
             </div>
-            <div className="grid grid-cols-4 gap-4">
-              {filterData?.map((item) => {
+            {
+              filterData && <div className="grid grid-cols-4 gap-4">
+              {filterData?.slice(0,8)?.map((item) => {
                 return <ProductCard key={item?.id} item={item} />;
               })}
             </div>
+            }
+            {
+              loading && <>Loading...</>
+            }
+            {
+              filterData?.length === 0 && <>Empty</>
+            }
           </div>
         </div>
       </div>

@@ -2,17 +2,19 @@ import { MdOutlineCancel } from "react-icons/md";
 import { IoReturnUpBackOutline } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../context/authContext";
+import { toast } from "react-toastify";
 
 export default function CartPage() {
   const existingArrayString = localStorage.getItem("myCart");
   const existingArray = JSON.parse(existingArrayString) || [];
-  const [addCartData ,setAddCartData] = useState(existingArray)
-  const [hasRemoveCart,setHasRemoveCart] = useState(false)
-  const [selectedCart,setSelectedCart] = useState(existingArray?.[0])
+  const [addCartData, setAddCartData] = useState(existingArray)
+  const [hasRemoveCart, setHasRemoveCart] = useState(false)
+  const [selectedCart, setSelectedCart] = useState(existingArray?.[0])
   const navigate = useNavigate()
+  const {auth} = useAuthContext()
 
-
-  const handleRemoveFromCart = (item)=>{
+  const handleRemoveFromCart = (item) => {
     const indexToRemove = existingArray.findIndex(obj => obj._id === item?._id);
     if (indexToRemove !== -1) {
       existingArray.splice(indexToRemove, 1);
@@ -21,9 +23,14 @@ export default function CartPage() {
     }
     setHasRemoveCart(!hasRemoveCart)
   }
-   useEffect(()=>{
-     setAddCartData(existingArray)
-  },[hasRemoveCart])
+  useEffect(() => {
+    setAddCartData(existingArray)
+  }, [hasRemoveCart])
+
+  const handleLogin=()=>{
+    toast.error("Please login first to buy product")
+    navigate("/login")
+  }
 
   return (
     <div className="m-20 flex justify-between">
@@ -41,13 +48,13 @@ export default function CartPage() {
             </thead>
             <tbody>
               {addCartData?.map((item, index) => (
-                <tr key={index} onClick={()=>setSelectedCart(item)} className={`grid cursor-pointer grid-cols-4 gap-10 px-4 py-5 items-center ${item?._id === selectedCart?._id && "bg-blue-50"}`}>
+                <tr key={index} onClick={() => setSelectedCart(item)} className={`grid cursor-pointer grid-cols-4 gap-10 px-4 py-5 items-center ${item?._id === selectedCart?._id && "bg-blue-50"}`}>
                   <th className="flex items-center gap-2 text-base font-normal">
                     <MdOutlineCancel
                       fontSize={18}
                       cursor='pointer'
                       className="text-[#929FA5] hover:text-red-700"
-                    onClick={()=>handleRemoveFromCart(item)}
+                      onClick={() => handleRemoveFromCart(item)}
                     />
                     <img src={item?.images[0]?.url} alt="product" className="w-10 h-10" />
                     {item?.name}
@@ -60,7 +67,7 @@ export default function CartPage() {
             </tbody>
           </table>
           <div className="flex justify-between mt-5">
-            <button onClick={()=>navigate("/")} className="text-[#2DA5F3] border border-[#2DA5F3] text-sm px-6 py-2 flex gap-2">
+            <button onClick={() => navigate("/")} className="text-[#2DA5F3] border border-[#2DA5F3] text-sm px-6 py-2 flex gap-2">
               <IoReturnUpBackOutline color="#2DA5F3" fontSize={18} />
               Return to Shop
             </button>
@@ -92,7 +99,7 @@ export default function CartPage() {
               <p className="text-[#191C1F] text-sm">Total</p>
               <p className="text-[#191C1F] text-sm">{selectedCart?.price - selectedCart?.discount}</p>
             </div>
-            <button onClick={()=>navigate("/billing",{state:selectedCart})} className="bg-[#FA8232] text-white px-6 py-3 mt-5 text-sm">
+            <button onClick={() =>{auth?.accessToken ? navigate("/billing", { state: selectedCart }):handleLogin()}} className="bg-[#FA8232] text-white px-6 py-3 mt-5 text-sm">
               Proceed to Checkout
             </button>
           </div>
