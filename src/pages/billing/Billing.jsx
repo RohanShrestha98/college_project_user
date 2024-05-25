@@ -4,6 +4,7 @@ import InputField from "../../components/ui/InputField";
 import { useForm } from "react-hook-form";
 import { useBuyProductMutation } from "../../hooks/useMutateData";
 import { toast } from "react-toastify";
+import { useEffect, useState } from "react";
 
 export default function Billing() {
   const navigate = useNavigate()
@@ -11,6 +12,15 @@ export default function Billing() {
   const {register,watch} = useForm()
   const {auth} = useAuthContext()
   const orderData = location?.state
+  const [userDetails,setUserDetails] = useState(localStorage.getItem('details'))
+
+  useEffect(() => {
+    // Load todos from localStorage when the component mounts
+    const details = JSON.parse(localStorage.getItem('details'));
+    if (details) {
+      setUserDetails(details);
+    }
+  }, []);
 
   const buyProdcutMutation = useBuyProductMutation()
 
@@ -19,6 +29,7 @@ export default function Billing() {
     try {
       const result = await buyProdcutMutation.mutateAsync(["post", "create/", postData]);
       toast.success("Product order successfully")
+      localStorage.setItem('details', JSON.stringify(watch()));
       navigate("/track-order")
     } catch (error) {
       console.log("error", error?.response?.data?.errors?.error);
@@ -30,23 +41,23 @@ export default function Billing() {
       <form className="w-2/3 flex flex-col gap-4">
         <h1 className="font-semibold text-lg">Billing Information</h1>
         <div className="grid grid-cols-3 gap-2">
-          <InputField register={register} registerName={"firstName"} required label={"First Name"} placeholder={"Enter your first name"}/>
-          <InputField register={register} registerName={"middleName"}  label={"Middle Name"} placeholder={"Enter your middle name"}/>
-          <InputField register={register} registerName={"lastName"} required label={"Last Name"} placeholder={"Enter your last name"}/>
+          <InputField defaultValue={userDetails?.firstName} register={register} registerName={"firstName"} required label={"First Name"} placeholder={"Enter your first name"}/>
+          <InputField defaultValue={userDetails?.middleName} register={register} registerName={"middleName"}  label={"Middle Name"} placeholder={"Enter your middle name"}/>
+          <InputField defaultValue={userDetails?.lastName} register={register} registerName={"lastName"} required label={"Last Name"} placeholder={"Enter your last name"}/>
           </div>
           <div className="grid grid-cols-3 gap-2">
-          <InputField register={register} registerName={"city"} required label={"City"} placeholder={"Enter your city"}/>
-          <InputField register={register} registerName={"address"} required  label={"Address"} placeholder={"Enter your address"}/>
-          <InputField register={register} registerName={"zipCode"}  label={"Zip Code"} placeholder={"Enter your zip code"}/>
+          <InputField defaultValue={userDetails?.city} register={register} registerName={"city"} required label={"City"} placeholder={"Enter your city"}/>
+          <InputField defaultValue={userDetails?.address} register={register} registerName={"address"} required  label={"Address"} placeholder={"Enter your address"}/>
+          <InputField defaultValue={userDetails?.zipCode} register={register} registerName={"zipCode"}  label={"Zip Code"} placeholder={"Enter your zip code"}/>
         </div>
           <div className="grid grid-cols-2 gap-2">
-          <InputField register={register} disabled registerName={"email"} defaultValue={auth?.user?.email} required label={"Email"} placeholder={"Enter your email"}/>
-          <InputField register={register} registerName={"phome"} required  label={"Phone no"} placeholder={"Enter your phone number"}/>
+          <InputField  register={register} disabled registerName={"email"} defaultValue={auth?.user?.email} required label={"Email"} placeholder={"Enter your email"}/>
+          <InputField defaultValue={userDetails?.phome} register={register} registerName={"phome"} required  label={"Phone no"} placeholder={"Enter your phone number"}/>
         </div>
         <h1 className="font-semibold text-lg mt-4">Additional Information</h1>
         <div className="flex flex-col gap-1">
         <p className="text-gray-800 font-semibold text-sm">Order Notes (Optional)</p>
-        <textarea placeholder="Notes about your order, e.g. special notes for delivery" cols="30" className="border focus-visible:border-gray-700 outline-none p-4 text-sm" rows="6" {...register("additionalInformation")}></textarea>
+        <textarea defaultValue={userDetails?.additionalInformation} placeholder="Notes about your order, e.g. special notes for delivery" cols="30" className="border focus-visible:border-gray-700 outline-none p-4 text-sm" rows="6" {...register("additionalInformation")}></textarea>
         </div>
         
       </form>

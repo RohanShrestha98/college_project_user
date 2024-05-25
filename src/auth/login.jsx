@@ -9,6 +9,7 @@ import { useState } from "react";
 // import InputField from "../components/UI/InputField";
 import { LuEye } from "react-icons/lu";
 import { LuEyeOff } from "react-icons/lu";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const { setAuth } = useAuthContext();
@@ -33,6 +34,7 @@ const Login = () => {
             username: result?.data?.username || "",
           },
         };
+        toast.success("login successfull")
         setAuth(userDetailsData);
         cookies.set("accessToken", encryptData(result?.accessToken));
         cookies.set("userDetails", encryptData(userDetailsData));

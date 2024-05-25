@@ -95,6 +95,9 @@ export default function ProductDetails() {
       }
     };
 
+  const filterData = data?.data?.filter(item => item?.isRohan)
+
+
   
   return (
     <div className="base_layout ">
@@ -226,7 +229,7 @@ export default function ProductDetails() {
             </h2>
           </div>
           <div className="  grid grid-cols-5 gap-4 mt-4 ">
-            {data?.data?.map((item) => {
+            {filterData?.map((item) => {
               return (
                 <div
                   onClick={() =>
